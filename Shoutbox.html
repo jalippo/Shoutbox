@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Huutolaatikko</title>
+    <style>
+      body{background:#000;color:#fff}
+      #shoutbox{border:1px solid #ccc;padding:10px;height:300px;overflow:auto}
+      input[type="text"],button{color:#000;background:#ccc;border:none;padding:5px;margin-right:5px}
+      button{background:#333;color:#fff;cursor:pointer}
+    </style>
+  </head>
+  <body>
+    <h1>Huutolaatikko</h1>
+    <div id="username-section">
+      <p>Enter a username to join the shoutbox:</p>
+      <input id="username-input" type="text">
+      <button id="username-button">Join</button>
+    </div>
+    <br>
+    <div id="shoutbox-section" style="display:none">
+      <div id="shoutbox"></div>
+      <br>
+      <input id="shoutbox-input" type="text">
+      <button id="shoutbox-button">Shout!</button>
+    </div>
+    <script>
+      let username = "";
+      const messages = [];
+      const usernameSection = document.getElementById("username-section");
+      const shoutboxSection = document.getElementById("shoutbox-section");
+      const usernameInput = document.getElementById("username-input");
+      const usernameButton = document.getElementById("username-button");
+      const shoutboxInput = document.getElementById("shoutbox-input");
+      const shoutboxButton = document.getElementById("shoutbox-button");
+      const shoutbox = document.getElementById("shoutbox");
+
+      function setUsername() {
+        username = usernameInput.value;
+        if (username) {
+          usernameInput.value = "";
+          usernameSection.style.display = "none";
+          shoutboxSection.style.display = "block";
+        }
+      }
+
+      function addMessage() {
+        if (!username) return;
+        const message = `${new Date().toLocaleTimeString()} - ${username}: ${shoutboxInput.value}`;
+        messages.unshift(message);
+        shoutboxInput.value = "";
+        shoutbox.innerHTML = messages.slice(0, 50).map(m => `<p>${m}</p>`).join("");
+      }
+      
+      usernameButton.addEventListener("click", setUsername);
+      shoutboxButton.addEventListener("click", addMessage);
+      setInterval(addMessage, 5000);
+    </script>
+  </body>
+</html>
